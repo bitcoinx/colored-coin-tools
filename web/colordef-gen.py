@@ -6,9 +6,12 @@ import colordefs
 import json
 import os
 
+web.config.debug = True
+
 urls = (
     '/', 'index',
-    '/publish', 'publish'
+    '/publish', 'publish',
+    '/colorlist','colorlist'
 )
 
 render = web.template.render('templates/')
@@ -95,7 +98,23 @@ class publish:
             save_colordef(colordef)
         except Exception as e:
             return "Error saving: %s" % e
+        web.header('Access-Control-Allow-Origin','*');
         return "OK"
+
+class colorlist:
+    def GET(self):
+        colors = []
+        p = os.path.join(mydir, 'static', 'colordefs')
+        for fn in os.listdir(p):
+            fn = os.path.join(p, fn)
+            if not os.path.isfile(fn): continue
+            with open(fn, "r") as f:
+                colors.append(json.load(f)[0])
+        web.header('Access-Control-Allow-Origin','*');
+        return json.dumps(colors)
+            
+            
+    
             
 
 if __name__ == "__main__":
