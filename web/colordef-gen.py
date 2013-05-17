@@ -79,7 +79,7 @@ class index:
             except Exception as e:
                 return "Could not save your color definition: %s" % e
             url = "/static/colordefs/%s.colordef" % cd['colorid']
-            return "<a href='%s'>%s</a>" % (url, cd['colorid'])
+            return cd['colorid']
 
 class publish:
     def POST(self):
