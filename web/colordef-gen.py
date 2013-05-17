@@ -79,6 +79,7 @@ class index:
             except Exception as e:
                 return "Could not save your color definition: %s" % e
             url = "/static/colordefs/%s.colordef" % cd['colorid']
+            web.header('Access-Control-Allow-Origin','*');
             return cd['colorid']
 
 class publish:
