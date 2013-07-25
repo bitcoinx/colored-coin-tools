@@ -42,6 +42,7 @@ def mangle_name(name):
         count += 1
         
     name = str(count + 1) + '. ' + name
+    return name
 
 
 def colordef_from_form(form):
