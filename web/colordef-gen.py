@@ -5,6 +5,7 @@ from web import form
 import colordefs
 import json
 import os
+import re
 
 web.config.debug = True
 
@@ -28,10 +29,25 @@ myform = form.Form(
     form.Textbox("publickey", description = "public key (optional)"))
     
 
+def mangle_name(name):
+    name = re.sub('[\W]', '', name)
+    if len(name) > 80:
+        name = name[:80]
+        
+    count = 0
+    p = os.path.join(mydir, 'static', 'colordefs')
+    for fn in os.listdir(p):
+        fn = os.path.join(p, fn)
+        if not os.path.isfile(fn): continue
+        count += 1
+        
+    name = str(count + 1) + '. ' + name
+
+
 def colordef_from_form(form):
-    x = {"name": form.d.name,
+    x = {"name": mangle_name(form.d.name),
          "unit": form.d.unit,
-         "metaprops": ["name", 'unit'],
+         "metaprops": ['unit'],
          "style": form.d.style}
     if form.d.publickey:
         x["publickey"] = form.d.publickey
@@ -113,10 +129,6 @@ class colorlist:
                 colors.append(json.load(f)[0])
         web.header('Access-Control-Allow-Origin','*');
         return json.dumps(colors)
-            
-            
-    
-            
 
 if __name__ == "__main__":
     app.run()
