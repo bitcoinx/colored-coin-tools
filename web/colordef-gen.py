@@ -41,7 +41,7 @@ def mangle_name(name):
         if not os.path.isfile(fn): continue
         count += 1
         
-    name = str(count + 1) + '. ' + name
+    name = "c" + str(count + 1) + ':' + name
     return name
 
 
